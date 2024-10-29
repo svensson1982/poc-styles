@@ -1,0 +1,56 @@
+$sizes: compact, comfortable, spacious, dense;
+$variants: light, dark, surface;
+
+.ids-checkbox-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  & > .ids-checkbox-group__label {
+    font-style: normal;
+  }
+
+  & > .ids-checkbox-group__list {
+    display: flex;
+  }
+
+  &.ids-checkbox-group-horizontal > .ids-checkbox-group__list {
+    flex-direction: row;
+    align-items: center;
+  }
+  &.ids-checkbox-group-vertical > .ids-checkbox-group__list {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @each $size in $sizes {
+    &.ids-checkbox-group-#{$size} {
+      padding: var(--ids-comp-checkbox-group-vertical-container-size-padding-y-#{$size})
+        var(--ids-comp-checkbox-group-vertical-container-size-padding-x-#{$size});
+      gap: var(--ids-comp-checkbox-group-vertical-container-size-gap-#{$size});
+
+      .ids-checkbox-group__label {
+        font-family: var(--ids-comp-checkbox-group-label-typography-font-family-#{$size});
+        font-size: var(--ids-comp-checkbox-group-label-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-checkbox-group-label-typography-font-weight-#{$size});
+        line-height: var(--ids-comp-checkbox-group-label-typography-line-height-#{$size});
+        letter-spacing: var(--ids-comp-checkbox-group-label-typography-letter-spacing-#{$size});
+      }
+
+      .ids-checkbox-group__list {
+        padding: var(--ids-comp-checkbox-group-vertical-list-indeterminated-size-padding-y-#{$size})
+          var(--ids-comp-checkbox-group-vertical-list-indeterminated-size-padding-x-#{$size});
+        gap: var(--ids-comp-checkbox-group-horizontal-list-size-gap-#{$size});
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-checkbox-group-#{$variant} {
+      & > .ids-checkbox-group__label {
+        color: var(--ids-comp-checkbox-label-color-fg-#{$variant}-default);
+      }
+    }
+  }
+}

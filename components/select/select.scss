@@ -1,0 +1,118 @@
+$sizes: compact, comfortable, spacious, dense;
+$variants: surface, light;
+
+@mixin selectTriggerPlaceholderVariant($variant, $state) {
+  & > .ids-select__trigger > .ids-select__value > .ids-select__placeholder {
+    color: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-empty-color-fg-text-#{$variant}-#{$state});
+  }
+}
+
+.ids-select {
+  width: 100%;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
+
+  & > .ids-select__trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > .ids-select__value {
+      flex-grow: 1;
+      overflow: hidden;
+
+      & > .ids-select__placeholder {
+        user-select: none;
+      }
+
+      & > .ids-select__value-text {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        display: block;
+      }
+    }
+
+    & > .ids-select__arrow {
+      display: flex;
+      flex-shrink: 0;
+    }
+  }
+
+  @each $size in $sizes {
+    &.ids-select-#{$size} {
+      & > .ids-select__trigger {
+        gap: var(--ids-comp-forms-select-size-gap-#{$size});
+
+        & > .ids-select__value {
+          & > .ids-select__placeholder {
+            font-family: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-font-family-#{$size});
+            font-size: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-font-size-#{$size});
+            font-weight: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-font-weight-#{$size});
+            letter-spacing: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-letter-spacing-#{$size});
+            line-height: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-line-height-#{$size});
+          }
+        }
+      }
+    }
+  }
+}
+
+.ids-select-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+
+  box-shadow: var(--ids-smc-reference-container-effects-shadow-horizontal-none)
+    var(--ids-smc-reference-container-effects-shadow-vertical-xxl) var(--ids-smc-reference-container-effects-shadow-blur-xxxl)
+    var(--ids-smc-reference-container-effects-shadow-spread-xxs) var(--ids-smc-reference-container-effects-shadow-color-dark-default);
+
+  @each $size in $sizes {
+    &.ids-select-panel-#{$size} {
+      padding: var(--ids-comp-forms-select-panel-size-padding-y-#{$size}) var(--ids-comp-forms-select-panel-size-padding-x-#{$size});
+      gap: var(--ids-comp-forms-select-panel-size-gap-#{$size});
+      border-radius: var(--ids-comp-forms-select-panel-size-border-radius-#{$size});
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-select-panel-#{$variant} {
+      background: var(--ids-comp-forms-select-panel-color-bg-#{$variant}-default);
+    }
+  }
+}
+
+.ids-form-field > .ids-form-field__field-wrapper:has(.ids-select) {
+  cursor: pointer;
+}
+
+@each $variant in $variants {
+  .ids-form-field > .ids-form-field__field-wrapper {
+    .ids-select.ids-select-#{$variant} {
+      @include selectTriggerPlaceholderVariant($variant, default);
+    }
+    &:hover {
+      .ids-select.ids-select-#{$variant} {
+        @include selectTriggerPlaceholderVariant($variant, hovered);
+      }
+    }
+    &:focus,
+    &:focus-visible {
+      .ids-select.ids-select-#{$variant} {
+        @include selectTriggerPlaceholderVariant($variant, focused);
+      }
+    }
+    &:active {
+      .ids-select.ids-select-#{$variant} {
+        @include selectTriggerPlaceholderVariant($variant, pressed);
+      }
+    }
+  }
+}

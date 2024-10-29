@@ -1,0 +1,78 @@
+$sizes: compact, comfortable, spacious, dense;
+$variants: light, surface;
+
+.ids-fieldset {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  border-width: 0;
+  border-style: unset;
+  border-color: unset;
+
+  & > .ids-fieldset-legend {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    font-style: normal;
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+  }
+
+  & > .ids-fieldset-message {
+    display: flex;
+    width: 100%;
+    align-self: stretch;
+    font-style: normal;
+  }
+
+  & > .ids-fieldset-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    align-self: stretch;
+  }
+
+  @each $size in $sizes {
+    &.ids-fieldset-#{$size} {
+      padding: var(--ids-comp-forms-fieldset-size-padding-y-#{$size}) var(--ids-comp-forms-fieldset-size-padding-x-#{$size});
+      gap: var(--ids-comp-forms-fieldset-size-gap-#{$size});
+
+      & > .ids-fieldset-legend {
+        font-family: var(--ids-comp-forms-fieldset-legend-typography-font-family-#{$size});
+        font-size: var(--ids-comp-forms-fieldset-legend-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-forms-fieldset-legend-typography-font-weight-#{$size});
+        line-height: var(--ids-comp-forms-fieldset-legend-typography-line-height-#{$size});
+        letter-spacing: var(--ids-comp-forms-fieldset-legend-typography-letter-spacing-#{$size});
+      }
+
+      & > .ids-fieldset-message {
+        padding: var(--ids-comp-forms-message-size-padding-y-#{$size}) var(--ids-comp-forms-message-size-padding-x-#{$size});
+        gap: var(--ids-comp-forms-message-size-gap-#{$size});
+        font-family: var(--ids-comp-forms-message-typography-font-family-#{$size});
+        font-size: var(--ids-comp-forms-message-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-forms-message-typography-font-weight-#{$size});
+        line-height: var(--ids-comp-forms-message-typography-line-height-#{$size});
+        letter-spacing: var(--ids-comp-forms-message-typography-letter-spacing-#{$size});
+      }
+
+      & > .ids-fieldset-row {
+        gap: var(--ids-comp-forms-fieldset-row-size-gap-#{$size});
+        padding: var(--ids-comp-forms-fieldset-row-size-padding-y-#{$size}) var(--ids-comp-forms-fieldset-row-size-padding-x-#{$size});
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-fieldset-#{$variant} {
+      & > .ids-fieldset-legend {
+        color: var(--ids-comp-forms-fieldset-legend-color-fg-text-#{$variant}-default);
+      }
+
+      & > .ids-fieldset-message {
+        color: var(--ids-comp-forms-message-color-fg-text-#{$variant}-default);
+      }
+    }
+  }
+}

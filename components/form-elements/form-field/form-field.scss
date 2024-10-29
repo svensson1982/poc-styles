@@ -1,0 +1,294 @@
+$sizes: compact, comfortable, spacious, dense;
+$variants: surface, light;
+
+@mixin fieldWrapperVariant($variant, $state, $validation: null) {
+  $validationText: '';
+  @if ($validation) {
+    $validationText: '-' + $validation;
+  }
+
+  border-color: var(--ids-comp-forms-form-field-standard-field-wrapper-container-color-border-#{$variant}#{$validationText}-#{$state});
+  background: var(--ids-comp-forms-form-field-standard-field-wrapper-container-color-bg-#{$variant}#{$validationText}-#{$state});
+
+  & > .ids-form-field__field-wrapper__container {
+    & > .ids-form-field__leading-icon > .ids-icon {
+      color: var(--ids-comp-forms-form-field-standard-field-wrapper-leading-icon-color-fg-#{$variant}-#{$state});
+    }
+
+    & > .ids-form-field__prefix {
+      color: var(--ids-comp-forms-form-field-standard-field-wrapper-prefix-color-fg-#{$variant}-#{$state});
+    }
+
+    & > .ids-form-field__infix {
+      .ids-form-field-control {
+        color: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-filled-color-fg-text-#{$variant}-#{$state});
+      }
+
+      ::placeholder {
+        color: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-empty-color-fg-text-#{$variant}-#{$state});
+      }
+    }
+
+    & > .ids-form-field__suffix {
+      color: var(--ids-comp-forms-form-field-standard-field-wrapper-suffix-color-fg-#{$variant}-#{$state});
+    }
+
+    & > .ids-form-field__trailing-icon > .ids-icon {
+      color: var(--ids-comp-forms-form-field-standard-field-wrapper-trailing-icon-color-fg-#{$variant}-#{$state});
+    }
+  }
+
+  & > .ids-form-field__field-wrapper__action {
+    border-left-color: var(--ids-comp-forms-form-field-standard-field-wrapper-action-color-border-#{$variant}#{$validationText}-default);
+    background: var(--ids-comp-forms-form-field-standard-field-wrapper-action-color-bg-#{$variant}-default);
+  }
+
+  @if ($state == focused) {
+    $lightOrDark: 'dark';
+    @if ($variant == 'light') {
+      $lightOrDark: 'light';
+    }
+    outline-color: var(--ids-comp-forms-form-field-standard-field-wrapper-container-color-focused-outline-color-#{$lightOrDark}-focused);
+  }
+}
+
+@mixin fieldLabelVariant($variant, $state, $validation: null) {
+  $validationText: '';
+  @if ($validation) {
+    $validationText: '-' + $validation;
+  }
+  & > .ids-form-field__label {
+    color: var(--ids-comp-forms-form-field-standard-label-color-fg-#{$variant}#{$validationText}-#{$state});
+  }
+}
+
+.ids-form-field {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  & > .ids-form-field__label {
+    flex: 1 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-style: normal;
+  }
+
+  & > .ids-form-field__field-wrapper {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    flex-shrink: 0;
+    border-style: solid;
+    box-sizing: border-box;
+
+    & > .ids-form-field__field-wrapper__container {
+      display: flex;
+      align-items: center;
+      flex: 1 0 0;
+      overflow-x: hidden;
+
+      & > .ids-form-field__leading-icon,
+      & > .ids-form-field__prefix,
+      & > .ids-form-field__duffix,
+      & > .ids-form-field__trailing-icon {
+        display: flex;
+        align-items: center;
+      }
+
+      & > .ids-form-field__infix {
+        display: flex;
+        align-items: center;
+        flex: 1 0 0;
+        overflow-x: hidden;
+
+        input,
+        textarea {
+          appearance: none;
+          border: none;
+          background-color: transparent;
+          flex: 1 0 0;
+          padding: 0;
+          font-family: inherit;
+          font-size: inherit;
+          font-style: normal;
+          font-weight: inherit;
+          letter-spacing: inherit;
+          line-height: inherit;
+
+          &:focus-visible {
+            outline: none;
+          }
+        }
+
+        textarea {
+          resize: vertical;
+        }
+      }
+    }
+
+    & > .ids-form-field__field-wrapper__action {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      border-left-style: solid;
+    }
+
+    &:has(.ids-form-field-control:focus) {
+      outline-offset: 2px;
+      outline-style: solid;
+    }
+  }
+
+  @each $size in $sizes {
+    &.ids-form-field-#{$size} {
+      gap: var(--ids-comp-forms-form-field-standard-size-gap-#{$size});
+
+      & > .ids-form-field__label {
+        padding: var(--ids-comp-forms-form-field-standard-label-size-padding-y-#{$size}) 0px;
+        font-family: var(--ids-comp-forms-form-field-standard-label-typography-font-family-#{$size});
+        font-size: var(--ids-comp-forms-form-field-standard-label-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-forms-form-field-standard-label-typography-font-weight-#{$size});
+        letter-spacing: var(--ids-comp-forms-form-field-standard-label-typography-letter-spacing-#{$size});
+        line-height: var(--ids-comp-forms-form-field-standard-label-typography-line-height-#{$size});
+      }
+
+      & > .ids-form-field__field-wrapper {
+        padding: var(--ids-comp-forms-form-field-standard-field-wrapper-size-padding-y-#{$size})
+          var(--ids-comp-forms-form-field-standard-field-wrapper-size-padding-x-#{$size});
+        gap: var(--ids-comp-forms-form-field-standard-field-wrapper-size-gap-#{$size});
+        border-radius: var(--ids-comp-forms-form-field-standard-field-wrapper-size-border-radius-#{$size});
+        border-width: var(--ids-comp-forms-form-field-standard-field-wrapper-size-border-width-#{$size});
+
+        & > .ids-form-field__field-wrapper__container {
+          min-height: var(--ids-comp-forms-form-field-standard-field-wrapper-container-size-min-height-#{$size});
+          padding: var(--ids-comp-forms-form-field-standard-field-wrapper-container-size-padding-y-#{$size})
+            var(--ids-comp-forms-form-field-standard-field-wrapper-container-size-padding-x-#{$size});
+          gap: var(--ids-comp-forms-form-field-standard-field-wrapper-container-size-gap-#{$size});
+
+          & > .ids-form-field__leading-icon > .ids-icon {
+            height: var(--ids-comp-forms-form-field-standard-field-wrapper-leading-icon-size-height-#{$size});
+            width: var(--ids-comp-forms-form-field-standard-field-wrapper-leading-icon-size-width-#{$size});
+            font-size: var(--ids-comp-forms-form-field-standard-field-wrapper-leading-icon-typography-font-size-#{$size});
+            font-weight: var(--ids-comp-forms-form-field-standard-field-wrapper-leading-icon-typography-font-weight-#{$size});
+            line-height: var(--ids-comp-forms-form-field-standard-field-wrapper-leading-icon-typography-line-height-#{$size});
+          }
+
+          & > .ids-form-field__prefix {
+            font-family: var(--ids-comp-forms-form-field-standard-field-wrapper-prefix-typography-font-family-#{$size});
+            font-size: var(--ids-comp-forms-form-field-standard-field-wrapper-prefix-typography-font-size-#{$size});
+            font-weight: var(--ids-comp-forms-form-field-standard-field-wrapper-prefix-typography-font-weight-#{$size});
+            letter-spacing: var(--ids-comp-forms-form-field-standard-field-wrapper-prefix-typography-letter-spacing-#{$size});
+            line-height: var(--ids-comp-forms-form-field-standard-field-wrapper-prefix-typography-line-height-#{$size});
+          }
+
+          & > .ids-form-field__infix {
+            padding: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-size-padding-y-#{$size}) 0;
+
+            font-family: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-filled-font-family-#{$size});
+            font-size: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-filled-font-size-#{$size});
+            font-weight: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-filled-font-weight-#{$size});
+            letter-spacing: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-filled-letter-spacing-#{$size});
+            line-height: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-filled-line-height-#{$size});
+
+            ::placeholder {
+              font-family: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-font-family-#{$size});
+              font-size: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-font-size-#{$size});
+              font-weight: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-font-weight-#{$size});
+              letter-spacing: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-letter-spacing-#{$size});
+              line-height: var(--ids-comp-forms-form-field-standard-field-wrapper-infix-typography-empty-line-height-#{$size});
+            }
+          }
+
+          & > .ids-form-field__suffix {
+            font-family: var(--ids-comp-forms-form-field-standard-field-wrapper-suffix-typography-font-family-#{$size});
+            font-size: var(--ids-comp-forms-form-field-standard-field-wrapper-suffix-typography-font-size-#{$size});
+            font-weight: var(--ids-comp-forms-form-field-standard-field-wrapper-suffix-typography-font-weight-#{$size});
+            letter-spacing: var(--ids-comp-forms-form-field-standard-field-wrapper-suffix-typography-letter-spacing-#{$size});
+            line-height: var(--ids-comp-forms-form-field-standard-field-wrapper-suffix-typography-line-height-#{$size});
+          }
+
+          & > .ids-form-field__trailing-icon > .ids-icon {
+            height: var(--ids-comp-forms-form-field-standard-field-wrapper-trailing-icon-size-height-#{$size});
+            width: var(--ids-comp-forms-form-field-standard-field-wrapper-trailing-icon-size-width-#{$size});
+            font-size: var(--ids-comp-forms-form-field-standard-field-wrapper-trailing-icon-typography-font-size-#{$size});
+            font-weight: var(--ids-comp-forms-form-field-standard-field-wrapper-trailing-icon-typography-font-weight-#{$size});
+            line-height: var(--ids-comp-forms-form-field-standard-field-wrapper-trailing-icon-typography-line-height-#{$size});
+          }
+        }
+
+        & > .ids-form-field__field-wrapper__action {
+          padding: 0px
+            var(--ids-comp-forms-form-field-standard-field-wrapper-action-size-padding-right-#{$size})
+            0px
+            var(--ids-comp-forms-form-field-standard-field-wrapper-action-size-padding-left-#{$size});
+          border-left-width: var(--ids-comp-forms-form-field-standard-field-wrapper-action-size-border-left-#{$size});
+        }
+
+        &:has(.ids-form-field-control:focus) {
+          outline-width: var(--ids-comp-forms-form-field-standard-field-wrapper-focused-outline-outline-#{$size});
+        }
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-form-field-#{$variant} {
+      &:not(.ids-form-field-disabled) {
+        & > .ids-form-field__field-wrapper {
+          @include fieldWrapperVariant($variant, default);
+          &:hover {
+            @include fieldWrapperVariant($variant, hovered);
+          }
+          &:has(.iids-form-field-control:focus) {
+            @include fieldWrapperVariant($variant, focused);
+          }
+          &:has(.ids-form-field-control:active) {
+            @include fieldWrapperVariant($variant, pressed);
+          }
+        }
+        @include fieldLabelVariant($variant, default);
+
+        &.ids-form-field-invalid {
+          & > .ids-form-field__field-wrapper {
+            @include fieldWrapperVariant($variant, default, error);
+            &:hover {
+              @include fieldWrapperVariant($variant, hovered, error);
+            }
+            &:has(.ids-form-field-control:focus) {
+              @include fieldWrapperVariant($variant, focused, error);
+            }
+            &:has(.ids-form-field-control:active) {
+              @include fieldWrapperVariant($variant, pressed, error);
+            }
+          }
+          @include fieldLabelVariant($variant, default, error);
+        }
+
+        &.ids-form-field-valid {
+          & > .ids-form-field__field-wrapper {
+            @include fieldWrapperVariant($variant, default, success);
+            &:hover {
+              @include fieldWrapperVariant($variant, hovered, success);
+            }
+            &:has(.ids-form-field-control:focus) {
+              @include fieldWrapperVariant($variant, focused, success);
+            }
+            &:has(.ids-form-field-control:active) {
+              @include fieldWrapperVariant($variant, pressed, success);
+            }
+          }
+          @include fieldLabelVariant($variant, default, success);
+        }
+      }
+
+      &.ids-form-field-disabled {
+        & > .ids-form-field__field-wrapper {
+          @include fieldWrapperVariant($variant, disabled);
+        }
+        @include fieldLabelVariant($variant, disabled);
+      }
+    }
+  }
+}

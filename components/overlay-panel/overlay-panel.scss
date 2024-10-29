@@ -1,0 +1,65 @@
+$appearances: filled, outlined, elevated;
+$sizes: compact, comfortable, spacious, dense;
+$variants: light, surface;
+
+.ids-overlay-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+
+  @each $size in $sizes {
+    &.ids-overlay-panel-#{$size} {
+      gap: var(--ids-comp-overlay-panel-size-gap-#{$size});
+      padding: var(--ids-comp-overlay-panel-size-padding-y-#{$size}) var(--ids-comp-overlay-panel-size-padding-x-#{$size});
+      border-radius: var(--ids-comp-overlay-panel-size-border-radius-#{$size});
+
+      @each $appearance in $appearances {
+        &.ids-overlay-panel-#{$appearance} {
+          &.ids-overlay-panel-outlined {
+            border-width: var(--ids-comp-overlay-panel-size-border-#{$size});
+            border-style: solid; 
+          }
+        }
+      }
+    }
+  }
+
+  &.ids-overlay-panel-filled {
+    box-shadow: none;
+  }
+  &.ids-overlay-panel-outlined {
+    box-shadow: var(--ids-smc-reference-container-effects-shadow-horizontal-none)
+      var(--ids-smc-reference-container-effects-shadow-vertical-xxs) var(--ids-smc-reference-container-effects-shadow-blur-xxs)
+      var(--ids-smc-reference-container-effects-shadow-spread-none) var(--ids-smc-reference-container-effects-shadow-color-dark-lighter);
+  }
+  &.ids-overlay-panel-elevated {
+    box-shadow: var(--ids-smc-reference-container-effects-shadow-horizontal-none)
+      var(--ids-smc-reference-container-effects-shadow-vertical-xxl) var(--ids-smc-reference-container-effects-shadow-blur-xxxl)
+      var(--ids-smc-reference-container-effects-shadow-spread-xxs) var(--ids-smc-reference-container-effects-shadow-color-dark-default);
+  }
+
+  @each $appearance in $appearances {
+    @each $variant in $variants {
+      &.ids-overlay-panel-#{$appearance} {
+        &.ids-overlay-panel-#{$variant} {
+          background: var(--ids-comp-overlay-panel-#{$appearance}-color-bg-#{$variant}-default);
+
+          &.ids-overlay-panel-outlined {
+            border-color: var(--ids-comp-overlay-panel-#{$appearance}-color-border-#{$variant}-default);
+          }
+        }
+      }
+    }
+  }
+
+  button {
+    &:hover {
+      border-color: transparent;
+    }
+    &:focus,
+    &:focus-visible {
+      outline-style: none !important;
+    }
+  }
+}

@@ -1,0 +1,100 @@
+$appearances: filled, outlined;
+$sizes: compact, comfortable, spacious, dense;
+$variants: primary, secondary, brand, error, success, warning, light, dark, surface;
+
+@mixin tagAppearanceAndVariant($appearance, $variant, $state) {
+  color: var(--ids-comp-tag-#{$appearance}-color-fg-label-#{$variant}-default);
+  background: var(--ids-comp-tag-#{$appearance}-color-bg-#{$variant}-default);
+  border-color: var(--ids-comp-tag-#{$appearance}-color-border-#{$variant}-default);
+
+  @if ($state == focused) {
+    $lightOrDark: 'dark';
+    @if ($variant == 'light') {
+      $lightOrDark: 'light';
+    }
+    outline-color: var(--ids-comp-tag-focused-outline-color-#{$lightOrDark}-focused);
+  }
+}
+
+.ids-tag {
+  flex-shrink: 0;
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+  box-sizing: border-box;
+
+  &:focus,
+  &:focus-visible {
+    outline-offset: 2px;
+    outline-style: solid;
+  }
+
+  &:active {
+    outline: none;
+  }
+
+  .ids-icon {
+    color: inherit;
+  }
+
+  @each $size in $sizes {
+    &.ids-tag-#{$size} {
+      gap: var(--ids-comp-tag-size-gap-#{$size});
+      height: var(--ids-comp-tag-size-height-#{$size});
+      padding: var(--ids-comp-tag-size-padding-y-#{$size}) var(--ids-comp-tag-size-padding-x-#{$size});
+      border-radius: var(--ids-comp-tag-size-border-radius-#{$size});
+      border: var(--ids-comp-tag-size-border-width-#{$size});
+
+      &:focus,
+      &:focus-visible {
+        outline-width: var(--ids-comp-tag-focused-outline-size-outline-#{$size});
+      }
+
+      & > .ids-tag-label {
+        font-family: var(--ids-comp-tag-label-typography-font-family-#{$size});
+        font-size: var(--ids-comp-tag-label-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-tag-label-typography-font-weight-#{$size});
+        letter-spacing: var(--ids-comp-tag-label-typography-letter-spacing-#{$size});
+        line-height: var(--ids-comp-tag-label-typography-line-height-#{$size});
+      }
+
+      .ids-icon {
+        width: var(--ids-comp-tag-size-icon-#{$size});
+        height: var(--ids-comp-tag-size-icon-#{$size});
+        font-size: var(--ids-comp-tag-icon-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-tag-icon-typography-font-weight-#{$size});
+        line-height: var(--ids-comp-tag-icon-typography-line-height-#{$size});
+      }
+    }
+  }
+
+  @each $appearance in $appearances {
+    @each $variant in $variants {
+      &.ids-tag-#{$appearance}.ids-tag-#{$variant} {
+        @include tagAppearanceAndVariant($appearance, $variant, default);
+
+        &:hover {
+          @include tagAppearanceAndVariant($appearance, $variant, hovered);
+        }
+        &:focus,
+        &:focus-visible {
+          @include tagAppearanceAndVariant($appearance, $variant, focused);
+        }
+        &:active {
+          @include tagAppearanceAndVariant($appearance, $variant, pressed);
+        }
+      }
+    }
+  }
+}
+
+button.ids-tag {
+  :not(:disabled) {
+    cursor: pointer;
+  }
+  :disabled {
+    cursor: not-allowed;
+  }
+}

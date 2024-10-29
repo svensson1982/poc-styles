@@ -1,0 +1,46 @@
+name: Manual Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version (e.g., v1.0.0)"
+        required: true
+      notes:
+        description: "Release notes"
+        required: false
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Git for tag creation
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+
+      # - name: Create Tag
+        # run: |
+        #   git tag -a ${{ github.event.inputs.version }} -m "${{ github.event.inputs.notes || 'Release' }}"
+        #   git push origin ${{ github.event.inputs.version }}
+
+      # - name: Create GitHub Release
+      #   uses: actions/create-release@v1
+        # with:
+        #   tag_name: ${{ github.event.inputs.version }}
+        #   release_name: ${{ github.event.inputs.version }}
+        #   body: ${{ github.event.inputs.notes || 'Release notes not provided' }}
+        #   draft: false
+        #   prerelease: false
+          # token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Optional: Upload an artifact
+      # - name: Upload Release Artifact
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: example-artifact
+      #     path: path/to/your/artifact.zip

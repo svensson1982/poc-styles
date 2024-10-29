@@ -1,0 +1,148 @@
+$appearances: text, filled;
+$sizes: compact, comfortable, spacious, dense;
+
+@mixin accordionAppearance($appearance, $state) {
+  background: var(--ids-comp-accordion-summary-#{$appearance}-color-bg-#{$state});
+  border-color: var(--ids-comp-accordion-summary-#{$appearance}-color-border-#{$state});
+  color: var(--ids-comp-accordion-summary-#{$appearance}-color-fg-label-#{$state});
+
+  & > .ids-icon {
+    color: var(--ids-comp-accordion-summary-#{$appearance}-color-fg-icon-#{$state});
+  }
+}
+
+.ids-accordion {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  
+  & > .ids-accordion-controls {
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+  }
+  
+  & > .ids-accordion-item {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+
+    & > .ids-accordion-item-summary {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      flex: 1 0 0;
+
+      & > .ids-accordion-item-title {
+        flex: 1 0 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    &.ids-accordion-item-disabled > .ids-accordion-item-summary {
+      pointer-events: none;
+      user-select: none;
+    }
+
+    & > .ids-accordion-item-content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      align-self: stretch;
+    }
+  }
+
+  @each $size in $sizes {
+    &.ids-accordion-#{$size} {
+      padding: var(--ids-comp-accordion-container-size-padding-y-#{$size}) var(--ids-comp-accordion-container-size-padding-x-#{$size});
+      gap: var(--ids-comp-accordion-container-size-gap-#{$size});
+      border-radius: var(--ids-comp-accordion-container-size-border-radius-#{$size});
+      border-width: var(--ids-comp-accordion-container-size-border-width-#{$size});
+      border-style: solid;
+
+      & > .ids-accordion-controls {
+        padding: var(--ids-comp-accordion-controls-size-padding-y-#{$size}) var(--ids-comp-accordion-controls-size-padding-x-#{$size});
+        gap: var(--ids-comp-accordion-controls-size-gap-#{$size});
+      }
+
+      & > .ids-accordion-item {
+        padding: var(--ids-comp-accordion-item-size-padding-y-#{$size}) var(--ids-comp-accordion-item-size-padding-x-#{$size});
+        gap: var(--ids-comp-accordion-item-size-gap-#{$size});
+
+        & > .ids-accordion-item-summary {
+          height: var(--ids-comp-accordion-summary-size-height-#{$size});
+          padding: var(--ids-comp-accordion-summary-size-padding-y-#{$size}) var(--ids-comp-accordion-summary-size-padding-x-#{$size});
+          gap: var(--ids-comp-accordion-summary-size-gap-#{$size});
+          border-radius: var(--ids-comp-accordion-summary-size-border-radius-#{$size});
+          border-width: var(--ids-comp-accordion-summary-size-border-width-#{$size});
+          border-style: solid;
+
+          &:focus,
+          &:focus-visible {
+            outline-offset: 2px;
+            outline-width: var(--ids-comp-accordion-summary-focused-outline-size-outline-#{$size});
+            outline-style: solid;
+            outline-color: var(--ids-comp-accordion-summary-focused-outline-color-dark-focused);
+            z-index: 1;
+          }
+
+          & > .ids-accordion-item-title {
+            font-family: var(--ids-comp-accordion-summary-typography-font-family-#{$size});
+            font-size: var(--ids-comp-accordion-summary-typography-font-size-#{$size});
+            font-weight: var(--ids-comp-accordion-summary-typography-font-weight-#{$size});
+            letter-spacing: var(--ids-comp-accordion-summary-typography-letter-spacing-#{$size});
+            line-height: var(--ids-comp-accordion-summary-typography-line-height-#{$size});
+          }
+
+          & > .ids-icon {
+            font-size: var(--ids-comp-accordion-summary-icon-typography-font-size-#{$size});
+            font-weight: var(--ids-comp-accordion-summary-icon-typography-font-weight-#{$size});
+            line-height: var(--ids-comp-accordion-summary-icon-typography-line-height-#{$size});
+            width: var(--ids-comp-accordion-summary-size-icon-#{$size});
+            height: var(--ids-comp-accordion-summary-size-icon-#{$size});
+          }
+        }
+
+        & > .ids-accordion-item-content {
+          padding: var(--ids-comp-accordion-details-size-padding-y-#{$size}) var(--ids-comp-accordion-details-size-padding-x-#{$size});
+          gap: var(--ids-comp-accordion-details-size-gap-#{$size});
+        }
+      }
+    }
+  }
+
+  @each $appearance in $appearances {
+    &.ids-accordion-#{$appearance} {
+      border-color: var(--ids-comp-accordion-container-color-border-default);
+      background-color: var(--ids-comp-accordion-container-color-bg-default);
+
+      .ids-accordion-item {
+        & > .ids-accordion-item-summary {
+          @include accordionAppearance($appearance, default);
+           
+          &:hover {
+            @include accordionAppearance($appearance, hovered);
+          }
+
+          &:focus,
+          &:focus-visible {
+            @include accordionAppearance($appearance, focused);
+          }
+            
+          &:active {
+            @include accordionAppearance($appearance, pressed);
+          }
+        }
+            
+        &.ids-accordion-item-disabled > .ids-accordion-item-summary {
+          @include accordionAppearance($appearance, disabled);
+        }
+      }
+    }
+  } 
+}

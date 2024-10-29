@@ -1,0 +1,6 @@
+.ids-form-field__required-marker::after {
+  content: '*';
+  color: var(--ids-comp-forms-asterisk-color-fg-default);
+  margin-left: 1px;
+  margin-right: 0;
+}

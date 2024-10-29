@@ -1,0 +1,109 @@
+@use 'sass:list';
+
+$appearances: filled, outlined, text;
+$sizes: compact, comfortable, spacious, dense;
+$variants: primary, secondary, brand, error, success, warning, light, light-fixed, dark, surface;
+
+@mixin buttonAppearanceAndVariant($appearance, $variant, $state) {
+  color: var(--ids-comp-button-#{$appearance}-color-fg-label-#{$variant}-#{$state});
+  background: var(--ids-comp-button-#{$appearance}-color-bg-#{$variant}-#{$state});
+  border-color: var(--ids-comp-button-#{$appearance}-color-border-#{$variant}-default);
+
+  @if ($state == focused) {
+    $lightOrDark: 'dark';
+    @if ($variant == 'light') {
+      $lightOrDark: 'light';
+    }
+    outline-color: var(--ids-comp-button-focused-outline-color-#{$lightOrDark}-focused);
+  }
+
+  & > .ids-icon {
+    color: var(--ids-comp-button-#{$appearance}-color-fg-icon-#{$variant}-#{$state});
+  }
+}
+
+.ids-button {
+  flex-shrink: 0;
+  width: fit-content;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  border-style: solid;
+
+  &:focus,
+  &:focus-visible {
+    outline-offset: 2px;
+    outline-style: solid;
+  }
+
+  &:active {
+    outline-style: none;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  & > .ids-icon {
+    flex-shrink: 0;
+  }
+
+  @each $size in $sizes {
+    &.ids-button-#{$size} {
+      gap: var(--ids-comp-button-size-gap-#{$size});
+      height: var(--ids-comp-button-size-height-#{$size});
+      min-width: var(--ids-comp-button-size-min-width-#{$size});
+      padding: var(--ids-comp-button-size-padding-y-#{$size}) var(--ids-comp-button-size-padding-x-#{$size});
+      border-radius: var(--ids-comp-button-size-border-radius-#{$size});
+      border-width: var(--ids-comp-button-size-border-width-#{$size});
+
+      &:focus {
+        outline-width: var(--ids-comp-button-focused-outline-size-outline-#{$size});
+      }
+
+      & > .ids-button-label {
+        font-family: var(--ids-comp-button-label-typography-font-family-#{$size});
+        font-size: var(--ids-comp-button-label-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-button-label-typography-font-weight-#{$size});
+        letter-spacing: var(--ids-comp-button-label-typography-letter-spacing-#{$size});
+        line-height: var(--ids-comp-button-label-typography-line-height-#{$size});
+      }
+
+      & > .ids-icon {
+        width: var(--ids-comp-button-size-icon-#{$size});
+        height: var(--ids-comp-button-size-icon-#{$size});
+        font-size: var(--ids-comp-button-icon-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-button-icon-typography-font-weight-#{$size});
+        line-height: var(--ids-comp-button-icon-typography-line-height-#{$size});
+      }
+    }
+  }
+
+  @each $appearance in $appearances {
+    @each $variant in $variants {
+      &.ids-button-#{$appearance}.ids-button-#{$variant} {
+        @include buttonAppearanceAndVariant($appearance, $variant, default);
+
+        &:hover {
+          @include buttonAppearanceAndVariant($appearance, $variant, hovered);
+        }
+        &:focus,
+        &:focus-visible {
+          @include buttonAppearanceAndVariant($appearance, $variant, focused);
+        }
+        &:active {
+          @include buttonAppearanceAndVariant($appearance, $variant, pressed);
+        }
+        // The following variants do not have a disabled state
+        @if list.index(error success warning, $variant) == null {
+          &:disabled {
+            @include buttonAppearanceAndVariant($appearance, $variant, disabled);
+          }
+        }
+      }
+    }
+  }
+}

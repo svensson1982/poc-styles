@@ -1,0 +1,91 @@
+$sizes: compact, comfortable, spacious, dense;
+$variants: light, dark, surface;
+
+.ids-message {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-style: normal;
+
+  .ids-message__prefix,
+  .ids-message__suffix {
+    display: flex;
+    align-items: center;
+  }
+
+  .ids-message__text {
+    flex-grow: 1;
+    text-align: start;
+  }
+
+  .ids-icon {
+    color: inherit;
+    height: inherit;
+    width: inherit;
+  }
+
+  @each $size in $sizes {
+    &.ids-message-#{$size} {
+      gap: var(--ids-comp-forms-message-size-gap-#{$size});
+      padding: var(--ids-comp-forms-message-size-padding-y-#{$size}) var(--ids-comp-forms-message-size-padding-x-#{$size});
+      font-family: var(--ids-comp-forms-message-typography-font-family-#{$size});
+      font-size: var(--ids-comp-forms-message-typography-font-size-#{$size});
+      font-weight: var(--ids-comp-forms-message-typography-font-weight-#{$size});
+      letter-spacing: var(--ids-comp-forms-message-typography-letter-spacing-#{$size});
+      line-height: var(--ids-comp-forms-message-typography-line-height-#{$size});
+
+      .ids-message__prefix {
+        height: var(--ids-comp-forms-message-size-icon-height-#{$size});
+        width: var(--ids-comp-forms-message-size-icon-width-#{$size});
+
+        & > .ids-icon {
+          font-size: var(--ids-comp-forms-message-iconset-typography-font-size-#{$size});
+          font-weight: var(--ids-comp-forms-message-iconset-typography-font-weight-#{$size});
+          line-height: var(--ids-comp-forms-message-iconset-typography-line-height-#{$size});
+        }
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-message-#{$variant} {
+      .ids-message__prefix {
+        color: var(--ids-comp-forms-message-color-fg-icon-#{$variant}-default);
+      }
+      .ids-message__text,
+      .ids-message__suffix {
+        color: var(--ids-comp-forms-message-color-fg-text-#{$variant}-default);
+      }
+
+      &.ids-message-disabled {
+        .ids-message__prefix {
+          color: var(--ids-comp-forms-message-color-fg-icon-#{$variant}-disabled);
+        }
+        .ids-message__text,
+        .ids-message__suffix {
+          color: var(--ids-comp-forms-message-color-fg-text-#{$variant}-disabled);
+        }
+      }
+
+      &.ids-error-message {
+        .ids-message__prefix {
+          color: var(--ids-comp-forms-message-color-fg-icon-#{$variant}-error-default);
+        }
+        .ids-message__text,
+        .ids-message__suffix {
+          color: var(--ids-comp-forms-message-color-fg-text-#{$variant}-error-default);
+        }
+      }
+    }
+
+    &.ids-success-message {
+      .ids-message__prefix {
+        color: var(--ids-comp-forms-message-color-fg-icon-#{$variant}-success-default);
+      }
+      .ids-message__text,
+      .ids-message__suffix {
+        color: var(--ids-comp-forms-message-color-fg-text-#{$variant}-success-default);
+      }
+    }
+  }
+}

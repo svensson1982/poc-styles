@@ -1,0 +1,265 @@
+$sizes: compact, comfortable, spacious, dense;
+$variants: surface, light, primary;
+
+@mixin switchButtonVariant($variant, $state, $on) {
+  $onText: '';
+  @if ($on) {
+    $onText: 'on';
+  } @else {
+    $onText: 'off';
+  }
+
+  $handleState: '';
+  @if ($state == 'disabled') {
+    $handleState: 'disabled';
+  } @else {
+    $handleState: 'default';
+  }
+
+  & > .ids-switch__track {
+    background-color: var(--ids-comp-switch-track-#{$onText}-color-bg-#{$variant}-#{$state});
+
+    & > .ids-switch__track-icon {
+      & > .ids-icon {
+        color: var(--ids-comp-switch-track-#{$onText}-color-fg-icon-#{$variant}-#{$handleState});
+      }
+    }
+
+    & > .ids-switch__handle {
+      background-color: var(--ids-comp-switch-handle-#{$onText}-color-bg-#{$variant}-#{$handleState});
+      & > .ids-icon {
+        color: var(--ids-comp-switch-handle-#{$onText}-color-fg-icon-#{$variant}-#{$handleState});
+      }
+    }
+  }
+}
+
+@mixin switchLabelVariant($variant, $state) {
+  color: var(--ids-comp-switch-label-color-fg-#{$variant}-#{$state});
+}
+
+.ids-switch-group {
+  display: flex;
+  flex-direction: column;
+
+  @each $size in $sizes {
+    &.ids-switch-group-#{$size} {
+      gap: var(--ids-comp-switch-group-container-size-gap-#{$size});
+      padding: var(--ids-comp-switch-group-container-size-padding-y-#{$size})
+        var(--ids-comp-switch-group-container-size-padding-x-#{$size});
+    }
+  }
+}
+
+.ids-switch {
+  display: inline-flex;
+  align-items: center;
+
+  & > .ids-switch__button {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+
+    &:disabled {
+      pointer-events: none;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline-offset: 2px;
+      outline-style: solid;
+    }
+
+    & > .ids-switch__track {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      & > .ids-switch__track-icon {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: auto;
+        bottom: auto;
+      }
+
+      & > .ids-switch__handle {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+
+        & > .ids-icon {
+          position: absolute;
+        }
+      }
+    }
+  }
+
+  & > .ids-switch__label {
+    font-style: normal;
+  }
+
+  @each $size in $sizes {
+    &.ids-switch-#{$size} {
+      gap: var(--ids-comp-switch-container-size-gap-#{$size});
+
+      & > .ids-switch__button {
+        border-radius: var(--ids-comp-switch-handle-size-border-radius-#{$size});
+
+        &:focus,
+        &:focus-visible {
+          outline-width: var(--ids-comp-switch-focused-outline-outline-#{$size});
+        }
+
+        & > .ids-switch__track {
+          width: var(--ids-comp-switch-track-size-width-#{$size});
+          height: calc(var(--ids-comp-switch-handle-size-height-#{$size}) + var(--ids-comp-switch-track-size-padding-y-#{$size}) * 2);
+          padding: var(--ids-comp-switch-track-size-padding-y-#{$size}) var(--ids-comp-switch-track-size-padding-x-#{$size});
+          border-radius: var(--ids-comp-switch-track-size-border-radius-#{$size});
+          box-sizing: border-box;
+
+          & > .ids-switch__track-icon {
+            &:nth-child(1) {
+              left: var(--ids-comp-switch-track-size-padding-x-#{$size});
+            }
+            &:nth-child(2) {
+              right: var(--ids-comp-switch-track-size-padding-x-#{$size});
+            }
+          }
+
+          & > .ids-switch__handle {
+            border-radius: var(--ids-comp-switch-handle-size-border-radius-#{$size});
+            transition: left 100ms ease-in-out;
+          }
+
+          & > .ids-switch__track-icon,
+          & > .ids-switch__handle {
+            width: var(--ids-comp-switch-handle-size-width-#{$size});
+            height: var(--ids-comp-switch-handle-size-height-#{$size});
+
+            & > .ids-icon {
+              width: var(--ids-comp-switch-icon-size-width-#{$size});
+              height: var(--ids-comp-switch-icon-size-height-#{$size});
+              font-size: var(--ids-comp-switch-icon-typography-font-size-#{$size});
+              font-weight: var(--ids-comp-switch-icon-typography-font-weight-#{$size});
+              line-height: var(--ids-comp-switch-icon-typography-line-height-#{$size});
+            }
+          }
+        }
+      }
+
+      & > .ids-switch__label {
+        font-family: var(--ids-comp-switch-label-typography-font-family-#{$size});
+        font-size: var(--ids-comp-switch-label-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-switch-label-typography-font-weight-#{$size});
+        line-height: var(--ids-comp-switch-label-typography-line-height-#{$size});
+        letter-spacing: var(--ids-comp-switch-label-typography-letter-spacing-#{$size});
+      }
+
+      &:not(.ids-switch-on) {
+        & > .ids-switch__button {
+          & > .ids-switch__track {
+            & > .ids-switch__handle {
+              left: 0;
+            }
+          }
+        }
+      }
+
+      &.ids-switch-on {
+        & > .ids-switch__button {
+          & > .ids-switch__track {
+            & > .ids-switch__handle {
+              left: calc(
+                var(--ids-comp-switch-track-size-width-#{$size}) - var(--ids-comp-switch-handle-size-width-#{$size}) -
+                  2 *
+                  var(--ids-comp-switch-track-size-padding-x-#{$size})
+              );
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-switch-#{$variant} {
+      &:not(.ids-switch-disabled) {
+        & > .ids-switch__button {
+          @include switchButtonVariant($variant, default, false);
+          & + .ids-switch__label {
+            @include switchLabelVariant($variant, default);
+          }
+
+          &:hover {
+            @include switchButtonVariant($variant, hovered, false);
+            & + .ids-switch__label {
+              @include switchLabelVariant($variant, hovered);
+            }
+          }
+          &:active {
+            @include switchButtonVariant($variant, pressed, false);
+            & + .ids-switch__label {
+              @include switchLabelVariant($variant, pressed);
+            }
+          }
+          &:focus,
+          &:focus-visible {
+            @include switchButtonVariant($variant, focused, false);
+            outline-color: var(--ids-comp-switch-focused-outline-color-#{$variant}-focused);
+            & + .ids-switch__label {
+              @include switchLabelVariant($variant, focused);
+            }
+          }
+        }
+
+        &.ids-switch-on {
+          & > .ids-switch__button {
+            @include switchButtonVariant($variant, default, true);
+
+            &:hover {
+              @include switchButtonVariant($variant, hovered, true);
+            }
+            &:active {
+              @include switchButtonVariant($variant, pressed, true);
+            }
+            &:focus,
+            &:focus-visible {
+              @include switchButtonVariant($variant, focused, true);
+            }
+          }
+        }
+      }
+
+      &.ids-switch-disabled {
+        & > .ids-switch__button {
+          & + .ids-switch__label {
+            @include switchLabelVariant($variant, disabled);
+          }
+        }
+
+        &:not(.ids-switch-on) {
+          & > .ids-switch__button {
+            @include switchButtonVariant($variant, disabled, false);
+          }
+        }
+
+        &.ids-switch-on {
+          & > .ids-switch__button {
+            @include switchButtonVariant($variant, disabled, true);
+          }
+        }
+      }
+    }
+  }
+
+  &.ids-switch-disabled {
+    cursor: not-allowed;
+  }
+}

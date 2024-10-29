@@ -1,0 +1,136 @@
+$sizes: compact, comfortable, spacious, dense;
+$variants: primary, surface, light, dark;
+$appearances: filled, outlined;
+
+@mixin segmentedControlItemAppearanceAndVariant($appearance, $variant, $state) {
+  background-color: var(--ids-comp-segmented-control-button-#{$appearance}-color-bg-#{$variant}-#{$state});
+  color: var(--ids-comp-segmented-control-button-#{$appearance}-color-fg-label-#{$variant}-#{$state});
+  border-color: var(--ids-comp-segmented-control-button-#{$appearance}-color-border-#{$variant}-#{$state});
+
+  .ids-icon {
+    color: var(--ids-comp-segmented-control-button-#{$appearance}-color-fg-icon-#{$variant}-#{$state});
+  }
+}
+
+.ids-segmented-control {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  .ids-segmented-control-item > button {
+    display: flex;
+    align-items: center;
+    border-style: solid;
+    position: relative;
+    text-wrap: nowrap;
+
+    &:focus,
+    &:focus-visible {
+      z-index: 1;
+      outline-style: solid;
+      outline-offset: 2px;
+    }
+
+    &:not(:disabled) {
+      cursor: pointer;
+    }
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  @each $size in $sizes {
+    &.ids-segmented-control-#{$size} {
+      padding: var(--ids-comp-segmented-control-container-size-padding-y-#{$size})
+        var(--ids-comp-segmented-control-container-size-padding-x-#{$size});
+      gap: var(--ids-comp-segmented-control-container-size-gap-#{$size});
+      border-top-left-radius: var(--ids-comp-segmented-control-container-size-border-radius-left-#{$size});
+      border-bottom-left-radius: var(--ids-comp-segmented-control-container-size-border-radius-left-#{$size});
+      border-top-right-radius: var(--ids-comp-segmented-control-container-size-border-radius-right-#{$size});
+      border-bottom-right-radius: var(--ids-comp-segmented-control-container-size-border-radius-right-#{$size});
+
+      .ids-segmented-control-item {
+        & > button {
+          border-width: var(--ids-comp-segmented-control-button-size-border-width-#{$size});
+          padding: var(--ids-comp-segmented-control-button-size-padding-y-#{$size})
+            var(--ids-comp-segmented-control-button-size-padding-x-#{$size});
+          gap: var(--ids-comp-segmented-control-button-size-gap-#{$size});
+          font-family: var(--ids-comp-segmented-control-button-typography-font-family-#{$size});
+          font-size: var(--ids-comp-segmented-control-button-typography-font-size-#{$size});
+          font-weight: var(--ids-comp-segmented-control-button-typography-font-weight-#{$size});
+          letter-spacing: var(--ids-comp-segmented-control-button-typography-letter-spacing-#{$size});
+          line-height: var(--ids-comp-segmented-control-button-typography-line-height-#{$size});
+
+          &:focus,
+          &:focus-visible {
+            outline-width: var(--ids-comp-segmented-control-focused-outline-size-outline-width-#{$size});
+          }
+        }
+
+        &:first-of-type > button {
+          border-top-left-radius: var(--ids-comp-segmented-control-button-size-border-radius-#{$size});
+          border-bottom-left-radius: var(--ids-comp-segmented-control-button-size-border-radius-#{$size});
+        }
+        &:last-of-type > button {
+          border-top-right-radius: var(--ids-comp-segmented-control-button-size-border-radius-#{$size});
+          border-bottom-right-radius: var(--ids-comp-segmented-control-button-size-border-radius-#{$size});
+        }
+        &:not(:last-of-type) > button {
+          border-right-width: 0;
+        }
+
+        .ids-icon {
+          height: var(--ids-comp-segmented-control-button-size-icon-#{$size});
+          width: var(--ids-comp-segmented-control-button-size-icon-#{$size});
+          font-size: var(--ids-comp-segmented-control-button-icon-typography-font-size-#{$size});
+          font-weight: var(--ids-comp-segmented-control-button-icon-typography-font-weight-#{$size});
+          line-height: var(--ids-comp-segmented-control-button-icon-typography-line-height-#{$size});
+        }
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-segmented-control-#{$variant} {
+      .ids-segmented-control-item > button {
+        &:focus,
+        &:focus-visible {
+          $lightOrDark: 'dark';
+          @if ($variant == 'light') {
+            $lightOrDark: 'light';
+          }
+          outline-color: var(--ids-comp-segmented-control-focused-outline-color-#{$lightOrDark}-focused);
+        }
+      }
+
+      @each $appearance in $appearances {
+        &.ids-segmented-control-#{$appearance} {
+          background-color: var(--ids-comp-segmented-control-container-#{$appearance}-color-bg-#{$variant}-default);
+          border-color: var(--ids-comp-segmented-control-container-#{$appearance}-color-border-#{$variant}-default);
+
+          .ids-segmented-control-item > button {
+            @include segmentedControlItemAppearanceAndVariant($appearance, $variant, default);
+
+            &.ids-segmented-control-item-selected:not(:disabled) {
+              @include segmentedControlItemAppearanceAndVariant($appearance, $variant, active);
+            }
+            &:hover {
+              @include segmentedControlItemAppearanceAndVariant($appearance, $variant, hovered);
+            }
+            &:active {
+              @include segmentedControlItemAppearanceAndVariant($appearance, $variant, pressed);
+            }
+            &:focus,
+            &:focus-visible {
+              @include segmentedControlItemAppearanceAndVariant($appearance, $variant, focused);
+            }
+            &:disabled {
+              @include segmentedControlItemAppearanceAndVariant($appearance, $variant, disabled);
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+$orientations: horizontal, vertical;
+$sizes: compact, comfortable, spacious, dense;
+$variants: primary, secondary, brand, error, success, warning, light, dark, surface;
+
+.ids-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @each $size in $sizes {
+    &.ids-divider-#{$size} {
+      border-radius: var(--ids-comp-divider-size-border-radius-#{$size});
+
+      &.ids-divider-horizontal {
+        height: var(--ids-comp-divider-size-height-#{$size});
+      }
+      &.ids-divider-vertical {
+        width: var(--ids-comp-divider-size-width-#{$size});
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-divider-#{$variant} {
+      background: var(--ids-comp-divider-color-bg-#{$variant}-default);
+    }
+  }
+}

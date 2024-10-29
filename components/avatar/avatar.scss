@@ -1,0 +1,68 @@
+$sizes: compact, comfortable, spacious, dense;
+$sizeCollections: smallcollection, bigcollection;
+$variants: primary, secondary, surface, light, dark;
+
+.ids-avatar {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-style: solid;
+  overflow: hidden;
+
+  &.ids-avatar-type-initials {
+    flex-direction: column;
+    text-align: center;
+    font-style: normal;
+    color: inherit;
+  }
+
+  &.ids-avatar-type-icon {
+    flex-shrink: 0;
+    & > .ids-icon {
+      color: inherit;
+    }
+  }
+
+  &.ids-avatar-type-image {
+    & > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  @each $sizeCollection in $sizeCollections {
+    @each $size in $sizes {
+      &.ids-avatar-#{$sizeCollection}-#{$size} {
+        width: var(--ids-comp-avatar-size-#{$sizeCollection}-width-#{$size});
+        height: var(--ids-comp-avatar-size-#{$sizeCollection}-height-#{$size});
+        border-width: var(--ids-comp-avatar-size-#{$sizeCollection}-border-#{$size});
+        border-radius: var(--ids-comp-avatar-size-#{$sizeCollection}-border-radius-#{$size});
+
+        &.ids-avatar-type-initials {
+          font-size: var(--ids-comp-avatar-initials-typography-#{$sizeCollection}-font-size-#{$size});
+          font-weight: var(--ids-comp-avatar-initials-typography-#{$sizeCollection}-font-weight-#{$size});
+          line-height: var(--ids-comp-avatar-initials-typography-#{$sizeCollection}-line-height-#{$size});
+          letter-spacing: var(--ids-comp-avatar-initials-typography-#{$sizeCollection}-letter-spacing-#{$size});
+        }
+
+        &.ids-avatar-type-icon > .ids-icon {
+          width: var(--ids-comp-avatar-size-#{$sizeCollection}-icon-#{$size});
+          height: var(--ids-comp-avatar-size-#{$sizeCollection}-icon-#{$size});
+          font-size: var(--ids-comp-avatar-icon-typography-#{$sizeCollection}-font-size-#{$size});
+          font-weight: var(--ids-comp-avatar-icon-typography-#{$sizeCollection}-font-weight-#{$size});
+          line-height: var(--ids-comp-avatar-icon-typography-#{$sizeCollection}-line-height-#{$size});
+        }
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-avatar-#{$variant} {
+      color: var(--ids-comp-avatar-color-fg-#{$variant}-default);
+      border-color: var(--ids-comp-avatar-color-border-#{$variant}-default);
+      background: var(--ids-comp-avatar-color-bg-#{$variant}-default);
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "name": "@i-cell/ids-styles",
+  "version": "0.0.18-beta.0",
+  "private": false,
+  "description": "Stylesheets for i-Cell Design System UI Kit components (currently Vue and Angular)",
+  "scripts": {
+    "build": "gulp",
+    "watch": "gulp watch",
+    "prepack": "npm run build",
+    "prepublish": "npm run build",
+    "check-missing-tokens": "npm run build && node scripts/check-missing-tokens.mjs ./dist",
+    "check-missing-tokens:prepare": "pnpm i",
+    "check-missing-tokens:ci": "node scripts/check-missing-tokens.mjs ./dist --limit=10"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/i-Cell-Mobilsoft-Open-Source/ids-styles.git"
+  },
+  "contributors": [
+    "Barsi Balázs",
+    "Bátori László",
+    "Nagy Gábor",
+    "Soós Árpád"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/i-Cell-Mobilsoft-Open-Source/ids-styles/issues"
+  },
+  "homepage": "https://github.com/i-Cell-Mobilsoft-Open-Source/ids-styles#readme",
+  "devDependencies": {
+    "@i-cell/ids-tokens": "0.0.25",
+    "commander": "^12.1.0",
+    "gulp": "^5.0.0",
+    "gulp-prettier": "^6.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "object-inspect": "^1.13.1",
+    "postcss": "^8.4.38",
+    "postcss-js": "^4.0.1",
+    "sass": "^1.77.4",
+    "through2": "^4.0.2"
+  }
+}

@@ -1,0 +1,214 @@
+@use 'sass:list';
+
+$appearances: filled, outlined, elevated;
+$sizes: compact, comfortable, spacious, dense;
+$variants: primary, secondary, brand, error, success, warning, info, light, dark, surface;
+$orientations: horizontal, vertical;
+
+// TODO: dragged state
+
+@mixin cardAppearanceAndVariant($appearance, $variant, $state) {
+  background-color: var(--ids-comp-card-#{$appearance}-color-bg-#{$variant}-#{$state});
+  border-color: var(--ids-comp-card-#{$appearance}-color-border-#{$variant}-#{$state});
+
+  @if ($state == focused) {
+    $lightOrDark: 'dark';
+    @if ($variant == 'light') {
+      $lightOrDark: 'light';
+    }
+    outline-color: var(--ids-comp-card-focused-outline-color-#{$lightOrDark}-focused);
+  }
+}
+
+.ids-card {
+  display: flex;
+  border-style: solid;
+  box-sizing: border-box;
+
+  &.ids-card-clickable {
+    pointer-events: auto;
+    cursor: pointer;
+
+    &:focus,
+    &:focus-visible {
+      outline-offset: 2px;
+      outline-style: solid;
+    }
+
+    &.ids-card-disabled {
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+  }
+
+  &.ids-card-vertical {
+    flex-direction: column;
+
+    .ids-card-section {
+      &:first-child {
+        padding-bottom: 0px;
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+      }
+      &:last-child {
+        padding-top: 0px;
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+      }
+      &.ids-card-section-stretched {
+        padding-left: 0px;
+        padding-right: 0px;
+        width: 100%;
+      }
+
+      .ids-card-header-headline {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  &.ids-card-horizontal {
+    .ids-card-section {
+      &:first-child {
+        padding-right: 0px;
+        border-top-left-radius: inherit;
+        border-bottom-left-radius: inherit;
+      }
+      &:last-child {
+        padding-left: 0px;
+        border-top-right-radius: inherit;
+        border-bottom-right-radius: inherit;
+      }
+      &.ids-card-section-stretched {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        height: 100%;
+      }
+
+      // No header or footer for horizontal cards
+      &.ids-card-header,
+      &.ids-card-footer {
+        display: none;
+      }
+    }
+  }
+
+  .ids-card-title {
+    color: var(--ids-smc-reference-container-color-fg-surface-darker-95);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 32px;
+  }
+
+  .ids-card-subtitle {
+    color: var(--ids-smc-reference-container-color-fg-surface-darker-70);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+  }
+
+  &.ids-card-elevated {
+    box-shadow:
+      var(--ids-smc-reference-container-effects-shadow-horizontal-none) var(--ids-smc-reference-container-effects-shadow-vertical-sm)
+        var(--ids-smc-reference-container-effects-shadow-blur-md) var(--ids-smc-reference-container-effects-shadow-spread-xxl)
+        var(--ids-smc-reference-container-effects-shadow-color-dark-light),
+      var(--ids-smc-reference-container-effects-shadow-horizontal-none) var(--ids-smc-reference-container-effects-shadow-vertical-xs)
+        var(--ids-smc-reference-container-effects-shadow-blur-sm) var(--ids-smc-reference-container-effects-shadow-spread-xl)
+        var(--ids-smc-reference-container-effects-shadow-color-dark-light);
+  }
+
+  @each $size in $sizes {
+    &.ids-card-#{$size} {
+      @each $orientation in $orientations {
+        &.ids-card-#{$orientation} {
+          padding: var(--ids-comp-card-container-#{$orientation}-size-padding-y-#{$size})
+            var(--ids-comp-card-container-#{$orientation}-size-padding-x-#{$size});
+          gap: var(--ids-comp-card-container-#{$orientation}-size-gap-#{$size});
+          border-radius: var(--ids-comp-card-container-#{$orientation}-size-border-radius-#{$size});
+
+          &.ids-card-outlined {
+            border-width: var(--ids-comp-card-container-#{$orientation}-size-border-width-#{$size});
+          }
+        }
+      }
+
+      &.ids-card-clickable:focus {
+        outline-width: var(--ids-comp-card-focused-outline-outline-#{$size});
+      }
+
+      .ids-card-header-headline {
+        gap: var(--ids-comp-card-header-headline-gap-#{$size});
+        padding: var(--ids-comp-card-header-headline-padding-y-#{$size}) var(--ids-comp-card-header-headline-padding-x-#{$size});
+      }
+
+      &.ids-card-vertical {
+        .ids-card-section {
+          &:not(.ids-card-media) {
+            &:first-child {
+              padding-top: var(--ids-comp-card-slot-size-padding-top-#{$size});
+            }
+            &:last-child {
+              padding-bottom: var(--ids-comp-card-slot-size-padding-bottom-#{$size});
+            }
+          }
+          &.ids-card-section-padded {
+            padding-left: var(--ids-comp-card-slot-size-padding-x-#{$size});
+            padding-right: var(--ids-comp-card-slot-size-padding-x-#{$size});
+          }
+        }
+      }
+
+      &.ids-card-horizontal {
+        .ids-card-section {
+          &:not(.ids-card-media) {
+            &:first-child {
+              padding-left: var(--ids-comp-card-slot-size-padding-top-#{$size});
+            }
+            &:last-child {
+              padding-right: var(--ids-comp-card-slot-size-padding-bottom-#{$size});
+            }
+          }
+          &.ids-card-section-padded {
+            padding-top: var(--ids-comp-card-slot-size-padding-x-#{$size});
+            padding-bottom: var(--ids-comp-card-slot-size-padding-x-#{$size});
+          }
+        }
+      }
+    }
+  }
+
+  @each $appearance in $appearances {
+    &.ids-card-#{$appearance} {
+      @each $variant in $variants {
+        &.ids-card-#{$variant} {
+          @include cardAppearanceAndVariant($appearance, $variant, default);
+
+          &.ids-card-clickable {
+            &:hover {
+              @include cardAppearanceAndVariant($appearance, $variant, hovered);
+            }
+            &:focus,
+            &:focus-visible {
+              @include cardAppearanceAndVariant($appearance, $variant, focused);
+            }
+
+            &:active {
+              @include cardAppearanceAndVariant($appearance, $variant, pressed);
+            }
+
+            // The following variants do not have a disabled state
+            @if list.index(error success warning info, $variant) == null {
+              &.ids-card-disabled {
+                @include cardAppearanceAndVariant($appearance, $variant, disabled);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

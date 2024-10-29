@@ -1,0 +1,100 @@
+$appearances: 'text', 'filled';
+$variants: 'surface';
+$sizes: 'compact', 'comfortable', 'spacious';
+
+.ids-menu-item {
+  width: 100%;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+
+  .ids-menu-item-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-style: normal;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  @each $size in $sizes {
+    &.ids-menu-item-#{$size} {
+      gap: var(--ids-comp-menu-item-size-gap-#{$size});
+      border-radius: var(--ids-comp-menu-item-size-border-radius-#{$size});
+      padding: var(--ids-comp-menu-item-size-padding-y-#{$size}) var(--ids-comp-menu-item-size-padding-x-#{$size});
+      height: var(--ids-comp-menu-item-size-height-#{$size});
+      font-family: var(--ids-comp-menu-item-label-typography-font-family-#{$size});
+      font-size: var(--ids-comp-menu-item-label-typography-font-size-#{$size});
+      font-weight: var(--ids-comp-menu-item-label-typography-font-weight-#{$size});
+      letter-spacing: var(--ids-comp-menu-item-label-typography-letter-spacing-#{$size});
+      line-height: var(--ids-comp-menu-item-label-typography-line-height-#{$size});
+
+      .ids-icon {
+        width: var(--ids-comp-menu-item-size-icon-#{$size});
+        height: var(--ids-comp-menu-item-size-icon-#{$size});
+        font-size: var(--ids-comp-menu-item-icon-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-menu-item-icon-typography-font-weight-#{$size});
+        line-height: var(--ids-comp-menu-item-icon-typography-line-height-#{$size});
+      }
+
+      @each $appearance in $appearances {
+        @each $variant in $variants {
+          &.ids-menu-item-#{$appearance}.ids-menu-item-#{$variant} {
+            border-style: solid;
+            border-width: var(--ids-comp-menu-item-size-border-width-#{$size});
+            border-color: var(--ids-comp-menu-item-#{$appearance}-color-border-#{$variant}-default);
+
+            &:hover {
+              border-color: var(--ids-comp-menu-item-#{$appearance}-color-border-#{$variant}-hovered);
+            }
+
+            &:disabled {
+              border-color: var(--ids-comp-menu-item-#{$appearance}-color-border-#{$variant}-disabled);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @each $appearance in $appearances {
+    &.ids-menu-item-#{$appearance} {
+      @each $variant in $variants {
+        &.ids-menu-item-#{$variant} {
+          color: var(--ids-comp-menu-item-#{$appearance}-color-fg-label-#{$variant}-default);
+          background: var(--ids-comp-menu-item-#{$appearance}-color-bg-#{$variant}-default);
+
+          &.ids-menu-item-active {
+            color: var(--ids-comp-menu-item-#{$appearance}-color-fg-label-#{$variant}-active);
+            background: var(--ids-comp-menu-item-#{$appearance}-color-bg-#{$variant}-active);
+          }
+
+          &:hover {
+            color: var(--ids-comp-menu-item-#{$appearance}-color-fg-label-#{$variant}-hovered);
+            background: var(--ids-comp-menu-item-#{$appearance}-color-bg-#{$variant}-hovered);
+          }
+
+          &:focus,
+          &:focus-visible {
+            color: var(--ids-comp-menu-item-#{$appearance}-color-fg-label-#{$variant}-focused);
+            background: var(--ids-comp-menu-item-#{$appearance}-color-bg-#{$variant}-focused);
+          }
+
+          &:active {
+            background: var(--ids-comp-menu-item-#{$appearance}-color-bg-#{$variant}-pressed);
+          }
+
+          &:disabled {
+            color: var(--ids-comp-menu-item-#{$appearance}-color-fg-label-#{$variant}-disabled);
+            background: var(--ids-comp-menu-item-#{$appearance}-color-bg-#{$variant}-disabled);
+          }
+        }
+      }
+    }
+  }
+}

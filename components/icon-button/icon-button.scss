@@ -1,0 +1,107 @@
+@use 'sass:list';
+
+$appearances: filled, outlined, standard;
+$sizes: compact, comfortable, spacious, dense;
+$variants: primary, secondary, brand, error, success, warning, light, dark, surface;
+
+@mixin iconButtonAppearanceAndVariant($appearance, $variant, $state) {
+  background: var(--ids-comp-icon-button-#{$appearance}-color-bg-#{$variant}-#{$state});
+  color: var(--ids-comp-icon-button-#{$appearance}-color-fg-#{$variant}-#{$state});
+
+  @if $appearance != standard {
+    border-color: var(--ids-comp-icon-button-#{$appearance}-color-border-#{$variant}-#{$state});
+  }
+
+  @if ($state == focused) {
+    $lightOrDark: 'dark';
+    @if ($variant == 'light') {
+      $lightOrDark: 'light';
+    }
+    outline-color: var(--ids-comp-icon-button-focused-outline-color-#{$lightOrDark}-focused);
+  }
+}
+
+.ids-icon-button {
+  padding: 0px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-style: solid;
+
+  &:focus,
+  &:focus-visible {
+    outline-offset: 2px;
+    outline-style: solid;
+  }
+
+  &:active {
+    outline-style: none;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+  }
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  & > .ids-icon {
+    color: inherit;
+  }
+
+  @each $size in $sizes {
+    &.ids-icon-button-#{$size} {
+      padding: var(--ids-comp-icon-button-size-padding-y-#{$size}) var(--ids-comp-icon-button-size-padding-x-#{$size});
+      width: var(--ids-comp-icon-button-size-width-#{$size});
+      height: var(--ids-comp-icon-button-size-height-#{$size});
+      border-radius: var(--ids-comp-icon-button-size-border-radius-#{$size});
+      border-width: var(--ids-comp-icon-button-size-border-#{$size});
+
+      &:focus,
+      &:focus-visible {
+        outline-width: var(--ids-comp-icon-button-focused-outline-size-outline-#{$size});
+      }
+
+      & > .ids-icon {
+        font-size: var(--ids-comp-icon-button-icon-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-icon-button-icon-typography-font-weight-#{$size});
+        line-height: var(--ids-comp-icon-button-icon-typography-line-height-#{$size});
+        width: var(--ids-comp-icon-button-size-icon-#{$size});
+        height: var(--ids-comp-icon-button-size-icon-#{$size});
+      }
+    }
+  }
+
+  @each $appearance in $appearances {
+    &.ids-icon-button-#{$appearance} {
+      @if $appearance == standard {
+        border: none;
+      }
+
+      @each $variant in $variants {
+        &.ids-icon-button-#{$variant} {
+          @include iconButtonAppearanceAndVariant($appearance, $variant, default);
+
+          &:hover {
+            @include iconButtonAppearanceAndVariant($appearance, $variant, hovered);
+          }
+          &:focus,
+          &:focus-visible {
+            @include iconButtonAppearanceAndVariant($appearance, $variant, focused);
+          }
+          &:active {
+            @include iconButtonAppearanceAndVariant($appearance, $variant, pressed);
+          }
+
+          &:disabled {
+            // The following variants do not have a disabled state
+            @if list.index(error success warning, $variant) == null {
+              @include iconButtonAppearanceAndVariant($appearance, $variant, disabled);
+            }
+          }
+        }
+      }
+    }
+  }
+}

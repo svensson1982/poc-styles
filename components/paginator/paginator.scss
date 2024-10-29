@@ -1,0 +1,244 @@
+$pageButtonAppearances: plain;
+$sizes: compact, comfortable, spacious, dense;
+$variants: primary, secondary, light, surface;
+
+@mixin pageButtonState($pageButtonAppearance, $variant, $state) {
+  background: var(--ids-comp-paginator-page-links-#{$pageButtonAppearance}-color-bg-#{$variant}-#{$state});
+  color: var(--ids-comp-paginator-page-links-#{$pageButtonAppearance}-color-fg-label-#{$variant}-#{$state});
+}
+
+@mixin pageButtonArrowState($pageButtonAppearance, $variant, $state) {
+  color: var(--ids-comp-paginator-page-links-#{$pageButtonAppearance}-color-fg-icon-#{$variant}-default);
+}
+
+.ids-paginator {
+  display: inline-flex;
+
+  .ids-paginator__navigation-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+
+    .ids-paginator__page-button-container {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .ids-paginator__page-button-truncation {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .ids-paginator__page-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-style: normal;
+      border-style: none;
+
+      &:focus,
+      &:focus-visible {
+        outline-offset: 2px;
+        outline-style: solid;
+      }
+
+      &:not(:disabled) {
+        cursor: pointer;
+      }
+      &:disabled {
+        cursor: not-allowed;
+      }
+    }
+
+    .ids-paginator__page-button-arrow {
+      &.first,
+      &.previous {
+        order: 1;
+      }
+
+      &.next,
+      &.last {
+        order: 3;
+      }
+    }
+
+    .ids-paginator__page-button-truncation:disabled {
+      cursor: default;
+    }
+
+    .ids-paginator__page-button-arrow,
+    .ids-paginator__page-button-truncation {
+      & > .ids-icon {
+        color: inherit;
+      }
+    }
+
+    .ids-paginator__page-button-container {
+      order: 2;
+    }
+
+    .ids-paginator__help-text {
+      order: 4;
+    }
+  }
+
+  .ids-paginator__help-text {
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+  }
+
+  @each $size in $sizes {
+    &.ids-paginator-#{$size} {
+      .ids-paginator__navigation-container {
+        gap: var(--ids-comp-paginator-size-gap-#{$size});
+
+        .ids-paginator__page-button {
+          height: var(--ids-comp-paginator-page-links-size-height-#{$size});
+          min-width: var(--ids-comp-paginator-page-links-size-min-width-#{$size});
+          padding: var(--ids-comp-paginator-page-links-size-padding-y-#{$size})
+            var(--ids-comp-paginator-page-links-size-padding-x-#{$size});
+          font-family: var(--ids-comp-paginator-page-links-label-typography-font-family-#{$size});
+          font-size: var(--ids-comp-paginator-page-links-label-typography-font-size-#{$size});
+          font-weight: var(--ids-comp-paginator-page-links-label-typography-font-weight-#{$size});
+          letter-spacing: var(--ids-comp-paginator-page-links-label-typography-letter-spacing-#{$size});
+          line-height: var(--ids-comp-paginator-page-links-label-typography-line-height-#{$size});
+          border-radius: var(--ids-comp-paginator-page-links-page-link-size-border-radius-#{$size});
+
+          &:focus,
+          &:focus-visible {
+            outline-width: var(--ids-comp-paginator-page-links-focused-outline-size-outline-#{$size});
+          }
+        }
+
+        .ids-paginator__page-button-arrow {
+          gap: var(--ids-comp-paginator-page-links-size-gap-#{$size});
+
+          &.previous > .ids-paginator__page-button-arrow__label {
+            padding-right: var(--ids-comp-paginator-page-links-label-size-padding-right-#{$size});
+          }
+          &.next > .ids-paginator__page-button-arrow__label {
+            padding-left: var(--ids-comp-paginator-page-links-label-size-padding-left-#{$size});
+          }
+        }
+
+        .ids-paginator__page-button-truncation {
+          height: var(--ids-comp-paginator-page-links-size-height-#{$size});
+          min-width: var(--ids-comp-paginator-page-links-size-min-width-#{$size});
+        }
+
+        .ids-paginator__page-button-arrow,
+        .ids-paginator__page-button-truncation {
+          & > .ids-icon {
+            width: var(--ids-comp-paginator-page-links-size-icon-#{$size});
+            height: var(--ids-comp-paginator-page-links-size-icon-#{$size});
+            font-size: var(--ids-comp-paginator-page-links-icon-typography-font-size-#{$size});
+            font-weight: var(--ids-comp-paginator-page-links-icon-typography-font-weight-#{$size});
+            line-height: var(--ids-comp-paginator-page-links-icon-typography-line-height-#{$size});
+          }
+        }
+      }
+
+      .ids-paginator__help-text {
+        font-family: var(--ids-comp-paginator-help-text-label-typography-font-family-#{$size});
+        font-size: var(--ids-comp-paginator-help-text-label-typography-font-size-#{$size});
+        font-weight: var(--ids-comp-paginator-help-text-label-typography-font-weight-#{$size});
+        letter-spacing: var(--ids-comp-paginator-help-text-label-typography-letter-spacing-#{$size});
+        line-height: var(--ids-comp-paginator-help-text-label-typography-line-height-#{$size});
+        border-radius: var(--ids-comp-paginator-help-text-size-border-radius-#{$size});
+        height: var(--ids-comp-paginator-help-text-size-height-#{$size});
+        padding: var(--ids-comp-paginator-help-text-size-padding-y-#{$size});
+      }
+    }
+  }
+
+  @each $variant in $variants {
+    &.ids-paginator-#{$variant} {
+      .ids-paginator__page-button {
+        &:focus,
+        &:focus-visible {
+          $lightOrDark: 'dark';
+          @if ($variant == 'light') {
+            $lightOrDark: 'light';
+          }
+          outline-color: var(--ids-comp-paginator-page-links-focused-outline-color-#{$lightOrDark}-focused);
+        }
+      }
+
+      .ids-paginator__navigation-container {
+        @each $pageButtonAppearance in $pageButtonAppearances {
+          .ids-paginator__page-button.ids-paginator__page-button-#{$pageButtonAppearance} {
+            @include pageButtonState($pageButtonAppearance, $variant, default);
+
+            &.active:not(:disabled) {
+              @include pageButtonState($pageButtonAppearance, $variant, active);
+            }
+            &:focus,
+            &:focus-visible {
+              @include pageButtonState($pageButtonAppearance, $variant, focused);
+            }
+            &:hover {
+              @include pageButtonState($pageButtonAppearance, $variant, hovered);
+            }
+            &:active {
+              @include pageButtonState($pageButtonAppearance, $variant, pressed);
+            }
+            &:disabled {
+              @include pageButtonState($pageButtonAppearance, $variant, disabled);
+            }
+
+            &.ids-paginator__page-button-arrow {
+              @include pageButtonArrowState($pageButtonAppearance, $variant, default);
+
+              &.active:not(:disabled) {
+                @include pageButtonArrowState($pageButtonAppearance, $variant, active);
+              }
+              &:focus,
+              &:focus-visible {
+                @include pageButtonArrowState($pageButtonAppearance, $variant, focused);
+              }
+              &:hover {
+                @include pageButtonArrowState($pageButtonAppearance, $variant, hovered);
+              }
+              &:active {
+                @include pageButtonArrowState($pageButtonAppearance, $variant, pressed);
+              }
+              &:disabled {
+                @include pageButtonArrowState($pageButtonAppearance, $variant, disabled);
+              }
+            }
+
+            &.ids-paginator__page-button-truncation {
+              color: var(--ids-comp-paginator-page-links-#{$pageButtonAppearance}-color-fg-icon-#{$variant}-disabled);
+            }
+          }
+        }
+      }
+
+      .ids-paginator__help-text {
+        color: var(--ids-comp-paginator-help-text-color-fg-#{$variant}-default);
+      }
+    }
+  }
+
+  &.ids-paginator-compact-layout {
+    .ids-paginator__navigation-container {
+      .ids-paginator__page-button-container {
+        display: none;
+      }
+      .ids-paginator__help-text {
+        order: 2;
+        margin-left: 0;
+      }
+    }
+  }
+}
