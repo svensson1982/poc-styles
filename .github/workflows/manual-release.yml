@@ -62,13 +62,14 @@ jobs:
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
         with:
           tag_name: ${{ github.event.inputs.version }}
           release_name: ${{ github.event.inputs.version }}
           body: ${{ github.event.inputs.notes || 'Release notes not provided' }}
           draft: false
           prerelease: false
-          # token: ${{ secrets.GITHUB_TOKEN }}
 
       # Optional: Upload an artifact
       # - name: Upload Release Artifact
