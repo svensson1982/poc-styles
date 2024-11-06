@@ -9,6 +9,8 @@ on:
       notes:
         description: "Release notes"
         required: false
+env:
+    GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
 
 jobs:
   create-release:
@@ -23,27 +25,6 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
 
-      # - name: Check if version is valid
-      #   id: version_check
-      #   run: |
-      #       input_version=${{ github.event.inputs.version }}
-      #       # Remove 'v' prefix if provided (optional)
-      #       input_version="${input_version#v}"
-            
-      #       # Extract the current version from package.json
-      #       current_version=$(jq -r .version package.json)
-  
-      #       # Compare versions using npm's semver package
-      #       if npx semver -r ">$current_version" "$input_version"; then
-      #         echo "New version $input_version is valid."
-      #         echo "::set-output name=proceed::true"
-      #       else
-      #         echo "Error: New version ($input_version) must be higher than the current version ($current_version)."
-      #         echo "::set-output name=proceed::false"
-      #         exit 1
-      #       fi
-      #       shell: bash
-
       - name: Update package.json version
         run: |
           version=${{ github.event.inputs.version }}
@@ -53,13 +34,11 @@ jobs:
       - name: Commit version update
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "github-actions[bot]@github.com"
           git add package.json
           git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
 
       - name: Push changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
         run: |
           git push origin main
 
@@ -67,15 +46,9 @@ jobs:
         run: |
           git tag -a ${{ github.event.inputs.version }} -m "${{ github.event.inputs.notes || 'Release' }}"
           git push origin ${{ github.event.inputs.version }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
          
-
       - name: Create GitHub Release
-        # uses: actions/create-release@v1 - outdated
         uses: ncipollo/release-action@v1.14.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
         with:
           token: ${{ secrets.GIT_PAT }}
           tag: ${{ github.event.inputs.version }}
@@ -83,10 +56,3 @@ jobs:
           body: ${{ github.event.inputs.notes }}
           draft: false
           prerelease: false
-
-      # Optional: Upload an artifact
-      # - name: Upload Release Artifact
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: example-artifact
-      #     path: path/to/your/artifact.zip
