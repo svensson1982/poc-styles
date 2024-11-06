@@ -1,6 +1,6 @@
 {
   "name": "@i-cell/ids-styles",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": false,
   "description": "Stylesheets for i-Cell Design System UI Kit components (currently Vue and Angular)",
   "scripts": {
