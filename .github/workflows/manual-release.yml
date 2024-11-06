@@ -47,10 +47,21 @@ jobs:
       - name: Update package.json version
         run: |
           version=${{ github.event.inputs.version }}
-          # Remove 'v' prefix if provided (optional)
-          version="${version#v}"
-          # Update version in package.json
-          npm version "$version" --no-git-tag-version    
+          version="${version#v}"  # Remove "v" prefix if provided
+          npm version "$version" --no-git-tag-version
+
+      - name: Commit version update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json
+          git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
+
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
+        run: |
+          git push origin main
 
       - name: Create Tag
         run: |
@@ -61,13 +72,15 @@ jobs:
          
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
+        # uses: actions/create-release@v1 - outdated
+        uses: ncipollo/release-action@v1.14.0
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
         with:
-          tag_name: ${{ github.event.inputs.version }}
-          release_name: ${{ github.event.inputs.version }}
-          body: ${{ github.event.inputs.notes || 'Release notes not provided' }}
+          token: ${{ secrets.GIT_PAT }}
+          tag: ${{ github.event.inputs.version }}
+          name: "Release ${{ github.event.inputs.version }}"
+          body: ${{ github.event.inputs.notes }}
           draft: false
           prerelease: false
 
