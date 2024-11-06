@@ -31,16 +31,16 @@ jobs:
           version="${version#v}"  # Remove "v" prefix if provided
           npm version "$version" --no-git-tag-version
 
-      - name: Commit version update
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@github.com"
-          git add package.json
-          git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
+      # - name: Commit version update
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@github.com"
+      #     git add package.json
+      #     git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
 
-      - name: Push changes
-        run: |
-          git push origin main
+      # - name: Push changes
+      #   run: |
+      #     git push origin main
 
       - name: Create Tag
         run: |
