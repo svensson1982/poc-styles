@@ -23,6 +23,26 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
 
+      # - name: Check if version is valid
+      #   id: version_check
+      #   run: |
+      #       input_version=${{ github.event.inputs.version }}
+      #       # Remove 'v' prefix if provided (optional)
+      #       input_version="${input_version#v}"
+            
+      #       # Extract the current version from package.json
+      #       current_version=$(jq -r .version package.json)
+  
+      #       # Compare versions using npm's semver package
+      #       if npx semver -r ">$current_version" "$input_version"; then
+      #         echo "New version $input_version is valid."
+      #         echo "::set-output name=proceed::true"
+      #       else
+      #         echo "Error: New version ($input_version) must be higher than the current version ($current_version)."
+      #         echo "::set-output name=proceed::false"
+      #         exit 1
+      #       fi
+      #       shell: bash
 
       - name: Update package.json version
         run: |
@@ -31,20 +51,20 @@ jobs:
           version="${version#v}"
           # Update version in package.json
           npm version "$version" --no-git-tag-version    
-          
-      # - name: Create Tag
-        # run: |
-        #   git tag -a ${{ github.event.inputs.version }} -m "${{ github.event.inputs.notes || 'Release' }}"
-        #   git push origin ${{ github.event.inputs.version }}
 
-      # - name: Create GitHub Release
-      #   uses: actions/create-release@v1
-        # with:
-        #   tag_name: ${{ github.event.inputs.version }}
-        #   release_name: ${{ github.event.inputs.version }}
-        #   body: ${{ github.event.inputs.notes || 'Release notes not provided' }}
-        #   draft: false
-        #   prerelease: false
+      - name: Create Tag
+        run: |
+          git tag -a ${{ github.event.inputs.version }} -m "${{ github.event.inputs.notes || 'Release' }}"
+          git push origin ${{ github.event.inputs.version }}
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: ${{ github.event.inputs.version }}
+          body: ${{ github.event.inputs.notes || 'Release notes not provided' }}
+          draft: false
+          prerelease: false
           # token: ${{ secrets.GITHUB_TOKEN }}
 
       # Optional: Upload an artifact
