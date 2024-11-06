@@ -56,6 +56,9 @@ jobs:
         run: |
           git tag -a ${{ github.event.inputs.version }} -m "${{ github.event.inputs.notes || 'Release' }}"
           git push origin ${{ github.event.inputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
+         
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
