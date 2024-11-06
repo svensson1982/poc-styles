@@ -23,6 +23,15 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
 
+
+      - name: Update package.json version
+        run: |
+          version=${{ github.event.inputs.version }}
+          # Remove 'v' prefix if provided (optional)
+          version="${version#v}"
+          # Update version in package.json
+          npm version "$version" --no-git-tag-version    
+          
       # - name: Create Tag
         # run: |
         #   git tag -a ${{ github.event.inputs.version }} -m "${{ github.event.inputs.notes || 'Release' }}"
