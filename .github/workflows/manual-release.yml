@@ -22,8 +22,8 @@ jobs:
 
       - name: Set up Git for tag creation
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@github.com"
 
       - name: Update package.json version
         run: |
@@ -33,8 +33,8 @@ jobs:
 
       - name: Commit version update
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@github.com"
+          # git config user.name "github-actions[bot]"
+          # git config user.email "github-actions[bot]@github.com"
           git add package.json
           git commit -m "chore: bump version to ${{ github.event.inputs.version }}"
           git push origin main          
