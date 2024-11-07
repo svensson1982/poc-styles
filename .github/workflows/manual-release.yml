@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{ secrets.GIT_PAT }}
           tag: ${{ github.event.inputs.version }}
-          name: "Release ${{ github.event.inputs.version }}"
+          name: "v${{ github.event.inputs.version }}"
           body: ${{ github.event.inputs.notes }}
           draft: false
           prerelease: false
