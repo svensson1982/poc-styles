@@ -22,8 +22,8 @@ jobs:
 
       - name: Set up Git for tag creation
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@github.com"
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
 
       - name: Update package.json version
         run: |
